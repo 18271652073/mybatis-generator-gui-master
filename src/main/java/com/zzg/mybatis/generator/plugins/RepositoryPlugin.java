@@ -16,7 +16,7 @@ public class RepositoryPlugin extends PluginAdapter {
     private FullyQualifiedJavaType annotationRepository;
     private String annotation = "@Repository";
 
-    public RepositoryPlugin () {
+    public RepositoryPlugin() {
         annotationRepository = new FullyQualifiedJavaType("org.springframework.stereotype.Repository"); //$NON-NLS-1$
     }
 

@@ -30,7 +30,7 @@ import java.util.Set;
  */
 public class MybatisGeneratorBridge {
 
-	private static final Logger _LOG = LoggerFactory.getLogger(MybatisGeneratorBridge.class);
+    private static final Logger _LOG = LoggerFactory.getLogger(MybatisGeneratorBridge.class);
 
     private GeneratorConfig generatorConfig;
 
@@ -58,25 +58,25 @@ public class MybatisGeneratorBridge {
         Context context = new Context(ModelType.CONDITIONAL);
         configuration.addContext(context);
         context.addProperty("javaFileEncoding", "UTF-8");
-	    String connectorLibPath = ConfigHelper.findConnectorLibPath(selectedDatabaseConfig.getDbType());
-	    _LOG.info("connectorLibPath: {}", connectorLibPath);
-	    configuration.addClasspathEntry(connectorLibPath);
+        String connectorLibPath = ConfigHelper.findConnectorLibPath(selectedDatabaseConfig.getDbType());
+        _LOG.info("connectorLibPath: {}", connectorLibPath);
+        configuration.addClasspathEntry(connectorLibPath);
         // Table configuration
         TableConfiguration tableConfig = new TableConfiguration(context);
         tableConfig.setTableName(generatorConfig.getTableName());
         tableConfig.setDomainObjectName(generatorConfig.getDomainObjectName());
-        if(!generatorConfig.isUseExample()) {
+        if (!generatorConfig.isUseExample()) {
             tableConfig.setUpdateByExampleStatementEnabled(false);
             tableConfig.setCountByExampleStatementEnabled(false);
             tableConfig.setDeleteByExampleStatementEnabled(false);
             tableConfig.setSelectByExampleStatementEnabled(false);
         }
 
-	    if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())) {
-		    tableConfig.setSchema(selectedDatabaseConfig.getSchema());
-	    } else {
+        if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())) {
+            tableConfig.setSchema(selectedDatabaseConfig.getSchema());
+        } else {
             tableConfig.setCatalog(selectedDatabaseConfig.getSchema());
-	    }
+        }
         if (generatorConfig.isUseSchemaPrefix()) {
             if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())) {
                 tableConfig.setSchema(selectedDatabaseConfig.getSchema());
@@ -93,7 +93,7 @@ public class MybatisGeneratorBridge {
         }
 
         //添加GeneratedKey主键生成
-		if (StringUtils.isNoneEmpty(generatorConfig.getGenerateKeys())) {
+        if (StringUtils.isNoneEmpty(generatorConfig.getGenerateKeys())) {
             String dbType = selectedDatabaseConfig.getDbType();
             if (DbType.MySQL.name().equals(dbType)) {
                 dbType = "JDBC";
@@ -105,8 +105,8 @@ public class MybatisGeneratorBridge {
                 //当使用SelectKey时，Mybatis会使用SelectKeyGenerator，INSERT之后，多发送一次查询语句，获得主键值
                 //在上述读写分离被代理的情况下，会得不到正确的主键
             }
-			tableConfig.setGeneratedKey(new GeneratedKey(generatorConfig.getGenerateKeys(), dbType, true, null));
-		}
+            tableConfig.setGeneratedKey(new GeneratedKey(generatorConfig.getGenerateKeys(), dbType, true, null));
+        }
 
         if (generatorConfig.getMapperName() != null) {
             tableConfig.setMapperName(generatorConfig.getMapperName());
@@ -123,17 +123,17 @@ public class MybatisGeneratorBridge {
             });
         }
         if (generatorConfig.isUseActualColumnNames()) {
-			tableConfig.addProperty("useActualColumnNames", "true");
+            tableConfig.addProperty("useActualColumnNames", "true");
         }
 
-		if(generatorConfig.isUseTableNameAlias()){
+        if (generatorConfig.isUseTableNameAlias()) {
             tableConfig.setAlias(generatorConfig.getTableName());
         }
 
         JDBCConnectionConfiguration jdbcConfig = new JDBCConnectionConfiguration();
         // http://www.mybatis.org/generator/usage/mysql.html
         if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())) {
-	        jdbcConfig.addProperty("nullCatalogMeansCurrent", "true");
+            jdbcConfig.addProperty("nullCatalogMeansCurrent", "true");
         }
         jdbcConfig.setDriverClass(DbType.valueOf(selectedDatabaseConfig.getDbType()).getDriverClass());
         jdbcConfig.setConnectionURL(DbUtil.getConnectionUrlWithSchema(selectedDatabaseConfig));
@@ -193,7 +193,7 @@ public class MybatisGeneratorBridge {
         // limit/offset插件
         if (generatorConfig.isOffsetLimit()) {
             if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())
-		            || DbType.PostgreSQL.name().equals(selectedDatabaseConfig.getDbType())) {
+                    || DbType.PostgreSQL.name().equals(selectedDatabaseConfig.getDbType())) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
                 pluginConfiguration.addProperty("type", "com.zzg.mybatis.generator.plugins.MySQLLimitPlugin");
                 pluginConfiguration.setConfigurationType("com.zzg.mybatis.generator.plugins.MySQLLimitPlugin");
@@ -207,7 +207,7 @@ public class MybatisGeneratorBridge {
             context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
         }
         //forUpdate 插件
-        if(generatorConfig.isNeedForUpdate()) {
+        if (generatorConfig.isNeedForUpdate()) {
             if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())
                     || DbType.PostgreSQL.name().equals(selectedDatabaseConfig.getDbType())) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
@@ -217,7 +217,7 @@ public class MybatisGeneratorBridge {
             }
         }
         //repository 插件
-        if(generatorConfig.isAnnotationDAO()) {
+        if (generatorConfig.isAnnotationDAO()) {
             if (DbType.MySQL.name().equals(selectedDatabaseConfig.getDbType())
                     || DbType.PostgreSQL.name().equals(selectedDatabaseConfig.getDbType())) {
                 PluginConfiguration pluginConfiguration = new PluginConfiguration();
@@ -244,35 +244,35 @@ public class MybatisGeneratorBridge {
         ShellCallback shellCallback = new DefaultShellCallback(true); // override=true
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, shellCallback, warnings);
         // if overrideXML selected, delete oldXML ang generate new one
-		if (generatorConfig.isOverrideXML()) {
-			String mappingXMLFilePath = getMappingXMLFilePath(generatorConfig);
-			File mappingXMLFile = new File(mappingXMLFilePath);
-			if (mappingXMLFile.exists()) {
-				mappingXMLFile.delete();
-			}
-		}
+        if (generatorConfig.isOverrideXML()) {
+            String mappingXMLFilePath = getMappingXMLFilePath(generatorConfig);
+            File mappingXMLFile = new File(mappingXMLFilePath);
+            if (mappingXMLFile.exists()) {
+                mappingXMLFile.delete();
+            }
+        }
 
         myBatisGenerator.generate(progressCallback, contexts, fullyqualifiedTables);
     }
 
     private String getMappingXMLFilePath(GeneratorConfig generatorConfig) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(generatorConfig.getProjectFolder()).append("/");
-		sb.append(generatorConfig.getMappingXMLTargetFolder()).append("/");
-		String mappingXMLPackage = generatorConfig.getMappingXMLPackage();
-		if (StringUtils.isNotEmpty(mappingXMLPackage)) {
-			sb.append(mappingXMLPackage.replace(".", "/")).append("/");
-		}
-		if (generatorConfig.getMapperName() != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(generatorConfig.getProjectFolder()).append("/");
+        sb.append(generatorConfig.getMappingXMLTargetFolder()).append("/");
+        String mappingXMLPackage = generatorConfig.getMappingXMLPackage();
+        if (StringUtils.isNotEmpty(mappingXMLPackage)) {
+            sb.append(mappingXMLPackage.replace(".", "/")).append("/");
+        }
+        if (generatorConfig.getMapperName() != null) {
             sb.append(generatorConfig.getMapperName()).append(".xml");
-        }else {
+        } else {
             sb.append(generatorConfig.getDomainObjectName()).append("Mapper.xml");
         }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	public void setProgressCallback(ProgressCallback progressCallback) {
+    public void setProgressCallback(ProgressCallback progressCallback) {
         this.progressCallback = progressCallback;
     }
 

@@ -153,7 +153,7 @@ public class CommonDAOInterfacePlugin extends PluginAdapter {
         List<Parameter> parameters = method.getParameters();
         if (parameters.size() == 1) {
             interceptExampleParam(method);
-        }else{
+        } else {
             method.getParameters().clear();
             Parameter parameter1 = new Parameter(new FullyQualifiedJavaType("Model"), "record");
             parameter1.addAnnotation("@Param(\"record\")");
@@ -192,7 +192,7 @@ public class CommonDAOInterfacePlugin extends PluginAdapter {
 
     @Override
     public boolean clientInsertMethodGenerated(Method method, Interface interfaze,
-                                                  IntrospectedTable introspectedTable) {
+                                               IntrospectedTable introspectedTable) {
         interceptModelParam(method);
         return false;
     }
@@ -257,7 +257,7 @@ public class CommonDAOInterfacePlugin extends PluginAdapter {
 
     @Override
     public boolean clientUpdateByExampleSelectiveMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-         interceptModelAndExampleParam(method);
+        interceptModelAndExampleParam(method);
         return false;
     }
 
